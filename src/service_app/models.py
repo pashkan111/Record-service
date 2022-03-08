@@ -2,6 +2,7 @@ import sqlalchemy as sa
 from db.db import Base, session
 from sqlalchemy.dialects.postgresql import JSON
 from .schemas import DataPostSchema
+from services import create_base64_key
 
 
 class Record(Base):
@@ -11,7 +12,8 @@ class Record(Base):
     data = sa.Column(JSON)
     
     @classmethod
-    def add_record(cls, data: DataPostSchema, key: str) -> str:
+    def add_record(cls, data: DataPostSchema) -> str:
+        key = create_base64_key(data)
         new_record = cls(key=key, data=data)
         session.add(new_record)
         session.commit()

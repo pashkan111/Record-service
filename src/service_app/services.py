@@ -1,8 +1,7 @@
 import base64
-from schemas import DataPostSchema
+import json
 
-
-def create_base64_key(data: DataPostSchema) -> str:
+def create_base64_key(data: json) -> str:
     data_loaded = data.dict()
     string_key = ''
     for key, value in data_loaded['data'].items():

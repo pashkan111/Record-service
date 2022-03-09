@@ -2,13 +2,14 @@ import tornado.ioloop
 import tornado.web
 from src.service_app import Base
 from db.db import engine
-from src.service_app.routes import RecordHandler
+from src.service_app.routes import RecordPostHandler, RecordGetHandler
 
 
 def make_app():
     Base.metadata.create_all(engine)
     return tornado.web.Application([
-        ('/api/add', RecordHandler)
+        ('/api/add', RecordPostHandler),
+        ('/api/get', RecordGetHandler)
     ])
 
 if __name__ == "__main__":

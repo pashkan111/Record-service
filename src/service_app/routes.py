@@ -3,6 +3,7 @@ import json
 from .models import Record
 import pydantic
 from .schemas import RecordSchema
+from .services import get_statistics
 
 
 class RecordPostHandler(RequestHandler):
@@ -52,4 +53,10 @@ class RecordUpdateHandler(RequestHandler):
                 self.write({'message': 'Record with such key does not exist'})
         else:
             self.write({'message': 'The key is required!'})
+            
+            
+class RecordStatisticsHandler(RequestHandler):
+    def get(self):
+        result = get_statistics()
+        self.write({'data': result})
             

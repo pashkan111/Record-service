@@ -4,7 +4,7 @@ from src.service_app import Base
 from db.db import engine
 from src.service_app.routes import (
     RecordPostHandler, RecordGetHandler, RecordRemoveHandler, 
-    RecordUpdateHandler
+    RecordUpdateHandler, RecordStatisticsHandler
     )
 
 
@@ -15,6 +15,7 @@ def make_app():
         ('/api/get', RecordGetHandler),
         ('/api/delete', RecordRemoveHandler),
         ('/api/put', RecordUpdateHandler),
+        ('/api/statistic', RecordStatisticsHandler),
     ])
 
 if __name__ == "__main__":

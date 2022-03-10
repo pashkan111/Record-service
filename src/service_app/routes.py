@@ -24,3 +24,17 @@ class RecordGetHandler(RequestHandler):
                 self.write({'message': 'Record with such key does not exist'})
         else:
             self.write({'message': 'The key is required!'})
+            
+            
+class RecordRemoveHandler(RequestHandler):
+    def delete(self):
+        key = self.get_argument('key')
+        if key:
+            try:
+                Record.delete_record_by_key(key)
+                self.write({'message': "The record successfully deleted"})
+            except:
+                self.write({'message': 'Record with such key does not exist'})
+        else:
+            self.write({'message': 'The key is required!'})
+            

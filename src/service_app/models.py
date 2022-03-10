@@ -3,6 +3,7 @@ from db.db import Base, session
 from sqlalchemy.dialects.postgresql import JSON
 from .services import create_base64_key
 import json
+from sqlalchemy.orm.exc import NoResultFound
 
 
 class Record(Base):
@@ -25,3 +26,11 @@ class Record(Base):
         record = session.query(cls).filter(cls.key==key).first()
         return record
     
+    @classmethod
+    def delete_record_by_key(cls, key: str):
+        record = session.query(cls).filter(cls.key==key).first()
+        if not record:
+            raise NoResultFound
+        session.delete(record)
+        session.commit()
+        session.close()

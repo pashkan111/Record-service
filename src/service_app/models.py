@@ -2,7 +2,6 @@ import sqlalchemy as sa
 from db.db import Base, session
 from sqlalchemy.dialects.postgresql import JSON
 from .services import create_base64_key
-import json
 from sqlalchemy.orm.exc import NoResultFound
 
 
@@ -11,14 +10,20 @@ class Record(Base):
     id = sa.Column(sa.Integer, primary_key=True)
     key = sa.Column(sa.String(64))
     data = sa.Column(JSON)
-    count = sa.Column(sa.Integer, default=0)
-    
+    count = sa.Column(sa.DECIMAL, default=0)
+        
     @classmethod
-    def add_record(cls, data: json) -> str:
+    def add_record(cls, data: dict) -> str:
         key = create_base64_key(data)
-        new_record = cls(key=key, data=data)
-        session.add(new_record)
-        session.commit()
+        record_checked = session.query(cls).filter(cls.key==key).first()
+        if not record_checked:
+            new_record = cls(key=key, data=data)
+            session.add(new_record)
+            session.commit()
+        else:
+            record_checked.count += 1
+            session.add(record_checked)
+            session.commit()
         return key
     
     @classmethod

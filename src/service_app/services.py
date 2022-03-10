@@ -16,8 +16,8 @@ def create_base64_key(data: json) -> str:
 def get_statistics():
     RAW_SQL = '''
         SELECT 
-        (SELECT SUM( CASE WHEN count>0 THEN count END))/
-        (SELECT SUM(count+1))*100
+        (SELECT SUM( CASE WHEN duplicates>0 THEN duplicates END))/
+        (SELECT SUM(duplicates+1))*100
         FROM record;
     '''
     with engine.connect() as conn:

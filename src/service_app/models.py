@@ -10,7 +10,7 @@ class Record(Base):
     id = sa.Column(sa.Integer, primary_key=True)
     key = sa.Column(sa.String(64))
     data = sa.Column(JSON)
-    count = sa.Column(sa.DECIMAL, default=0)
+    duplicates = sa.Column(sa.DECIMAL, default=0)
         
     @classmethod
     def add_record(cls, data: dict) -> str:
@@ -21,7 +21,7 @@ class Record(Base):
             session.add(new_record)
             session.commit()
         else:
-            record_checked.count += 1
+            record_checked.duplicates += 1
             session.add(record_checked)
             session.commit()
         return key
@@ -46,7 +46,7 @@ class Record(Base):
         if not record:
             raise NoResultFound
         record.data = data
-        record.count = 0
+        record.duplicates = 0
         session.add(record)
         session.commit()
         return record

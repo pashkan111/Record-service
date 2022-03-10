@@ -23,4 +23,5 @@ def get_statistics():
     with engine.connect() as conn:
         rs = conn.execute(RAW_SQL)
         result = rs.fetchone()[0]
-    return f'{int(result)}%'
+    procent_result = int(result) if result else 0
+    return f'{procent_result}%'

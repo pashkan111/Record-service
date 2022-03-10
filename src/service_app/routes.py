@@ -15,7 +15,7 @@ class RecordPostHandler(RequestHandler):
 
 class RecordGetHandler(RequestHandler):
     def get(self):
-        key = self.get_argument('key')
+        key = self.get_argument('key', None)
         if key:
             record = Record.get_record_by_key(key)
             try:
@@ -58,5 +58,5 @@ class RecordUpdateHandler(RequestHandler):
 class RecordStatisticsHandler(RequestHandler):
     def get(self):
         result = get_statistics()
-        self.write({'data': result})
+        self.write({'value': result})
             

@@ -38,3 +38,18 @@ class RecordRemoveHandler(RequestHandler):
         else:
             self.write({'message': 'The key is required!'})
             
+            
+class RecordUpdateHandler(RequestHandler):
+    def put(self):
+        data_loaded = json.loads(self.request.body)
+        key = self.get_argument('key')
+        if key:
+            try:
+                record = Record.update_record(key, data_loaded)
+                record_loaded = RecordSchema.from_orm(record).dict()
+                self.write(record_loaded)
+            except:
+                self.write({'message': 'Record with such key does not exist'})
+        else:
+            self.write({'message': 'The key is required!'})
+            

@@ -3,7 +3,8 @@ import tornado.web
 from src.service_app import Base
 from db.db import engine
 from src.service_app.routes import (
-    RecordPostHandler, RecordGetHandler, RecordRemoveHandler
+    RecordPostHandler, RecordGetHandler, RecordRemoveHandler, 
+    RecordUpdateHandler
     )
 
 
@@ -13,7 +14,7 @@ def make_app():
         ('/api/add', RecordPostHandler),
         ('/api/get', RecordGetHandler),
         ('/api/delete', RecordRemoveHandler),
-        
+        ('/api/put', RecordUpdateHandler),
     ])
 
 if __name__ == "__main__":

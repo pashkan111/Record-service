@@ -34,3 +34,15 @@ class Record(Base):
         session.delete(record)
         session.commit()
         session.close()
+        
+    @classmethod
+    def update_record(cls, key: str, data: dict):
+        record = session.query(cls).filter(cls.key==key).first()
+        if not record:
+            raise NoResultFound
+        record.data = data
+        record.count = 0
+        session.add(record)
+        session.commit()
+        return record
+        

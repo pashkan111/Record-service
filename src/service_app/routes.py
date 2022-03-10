@@ -1,7 +1,7 @@
 from tornado.web import RequestHandler
 import json
 from .models import Record
-# from .services import sqlalchemy_obj_to_dict
+import pydantic
 from .schemas import RecordSchema
 
 
@@ -17,7 +17,10 @@ class RecordGetHandler(RequestHandler):
         key = self.get_argument('key')
         if key:
             record = Record.get_record_by_key(key)
-            record_loaded = RecordSchema.from_orm(record).dict()
-            self.write(record_loaded)
+            try:
+                record_loaded = RecordSchema.from_orm(record).dict()
+                self.write(record_loaded)
+            except pydantic.error_wrappers.ValidationError:
+                self.write({'message': 'Record with such key does not exist'})
         else:
-            self.write({'key': 'None'})
+            self.write({'message': 'The key is required!'})
